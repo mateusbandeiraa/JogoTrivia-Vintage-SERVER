@@ -4,8 +4,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-import br.uniriotec.bsi.tp2.JogoTrivia_API.Jogo;
-
 public class Dao<T> {
 	protected static EntityManagerFactory emf;
 	private Class<T> persistedClass;
