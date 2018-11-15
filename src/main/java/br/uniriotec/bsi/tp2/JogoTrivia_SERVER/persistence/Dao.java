@@ -11,16 +11,21 @@ public class Dao<T> {
 	protected static EntityManagerFactory emf;
 	private Class<T> persistedClass;
 
-	public Dao(Class<T> persistedClass) throws Exception {
-		this.persistedClass = persistedClass;
-		this.setUp();
+	public Dao(Class<T> persistedClass) throws DaoException{
+		try {
+			this.persistedClass = persistedClass;
+			this.setUp();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			throw new DaoException();
+		}
 	}
 
-	protected void setUp() throws Exception {
+	protected void setUp() {
 		emf = Persistence.createEntityManagerFactory("br.uniriotec.bsi.tp2.JogoTrivia");
 	}
 
-	protected void tearDown() throws Exception {
+	protected void tearDown() {
 		emf.close();
 	}
 
