@@ -1,13 +1,16 @@
 package br.uniriotec.bsi.tp2.JogoTrivia_SERVER.persistence;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 
 public class Dao<T> {
 	protected static EntityManagerFactory emf;
 	private Class<T> persistedClass;
-		
+
 	public Dao(Class<T> persistedClass) throws Exception {
 		this.persistedClass = persistedClass;
 		this.setUp();
@@ -16,15 +19,29 @@ public class Dao<T> {
 	protected void setUp() throws Exception {
 		emf = Persistence.createEntityManagerFactory("br.uniriotec.bsi.tp2.JogoTrivia");
 	}
-	
-	protected void tearDown() throws Exception{
+
+	protected void tearDown() throws Exception {
 		emf.close();
 	}
-	
+
 	public T find(int id) {
-		return emf.createEntityManager().find(persistedClass, id);
+		EntityManager em = emf.createEntityManager();
+		em.getTransaction().begin();
+		T result = em.find(persistedClass, id);
+		em.close();
+		return result;
 	}
-	
+
+	public List<T> findAll() {
+		EntityManager em = emf.createEntityManager();
+		em.getTransaction().begin();
+		Query q = em.createQuery("FROM " + persistedClass.getSimpleName()); // Não é bonito, mas funciona.
+		@SuppressWarnings("unchecked")
+		List<T> result = q.getResultList();
+		em.close();
+		return result;
+	}
+
 	public void save(T entity) {
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
@@ -32,6 +49,7 @@ public class Dao<T> {
 		em.getTransaction().commit();
 		em.close();
 	}
+
 	public void update(T entity) {
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
@@ -39,7 +57,7 @@ public class Dao<T> {
 		em.getTransaction().commit();
 		em.close();
 	}
-	
+
 	public void remove(T entity) {
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
@@ -47,10 +65,9 @@ public class Dao<T> {
 		em.getTransaction().commit();
 		em.close();
 	}
-	
+
 	public void remove(int id) {
 		T entity = find(id);
 		remove(entity);
 	}
-	
 }
