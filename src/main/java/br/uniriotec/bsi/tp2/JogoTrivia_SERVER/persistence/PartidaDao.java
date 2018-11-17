@@ -8,7 +8,7 @@ import javax.persistence.Query;
 import br.uniriotec.bsi.tp2.JogoTrivia_API.EstadoPartida;
 import br.uniriotec.bsi.tp2.JogoTrivia_API.Partida;
 
-public class PartidaDao extends Dao<Partida> {
+public class PartidaDao extends Dao<Partida> implements PartidaDataSource{
 
 	public PartidaDao() throws DaoException {
 		super(Partida.class);

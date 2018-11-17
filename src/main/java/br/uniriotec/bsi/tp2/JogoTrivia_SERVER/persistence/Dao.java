@@ -7,7 +7,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
-public class Dao<T> {
+public class Dao<T> implements GenericDataSource<T>{
 	protected static EntityManagerFactory emf;
 	private Class<T> persistedClass;
 
