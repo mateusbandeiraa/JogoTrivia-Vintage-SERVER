@@ -10,7 +10,7 @@ import br.uniriotec.bsi.tp2.JogoTrivia_API.Questao;
 
 public enum MODO_SERIALIZACAO {
 
-	PARTIDA_INEDITA(), QUESTAO_INEDITA(), PARTICIPANTE();
+	PARTIDA_INEDITA(), QUESTAO_EM_JOGO(), PARTICIPANTE();
 
 	public final Map<Class<?>, String[]> CAMPOS_A_OMITIR;
 
@@ -21,7 +21,7 @@ public enum MODO_SERIALIZACAO {
 			CAMPOS_A_OMITIR.put(Jogo.class,
 					new String[] { "limiteAjudasTempoBonus", "limiteAjudasRemoverOpcoes", "questoes" });
 			break;
-		case "QUESTAO_INEDITA":
+		case "QUESTAO_EM_JOGO":
 			CAMPOS_A_OMITIR.put(Questao.class, new String[] { "opcaoCerta" });
 			CAMPOS_A_OMITIR.put(Opcao.class, new String[] { "estaCerto", "ehRemovivel" });
 			break;
