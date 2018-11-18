@@ -20,7 +20,9 @@
 		<servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
 		<init-param>
 			<param-name>com.sun.jersey.config.property.packages</param-name>
-			<param-value>br.uniriotec.bsi.tp2.JogoTrivia_SERVER.service; br.uniriotec.bsi.tp2.JogoTrivia_SERVER.persistence</param-value>
+			<param-value>br.uniriotec.bsi.tp2.JogoTrivia_SERVER.service;
+							br.uniriotec.bsi.tp2.JogoTrivia_SERVER.persistence;
+							br.uniriotec.bsi.tp2.JogoTrivia_SERVER.serialization</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>

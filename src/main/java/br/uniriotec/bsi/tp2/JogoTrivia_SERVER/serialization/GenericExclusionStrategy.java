@@ -14,7 +14,11 @@ public class GenericExclusionStrategy implements ExclusionStrategy {
 
 	@Override
 	public boolean shouldSkipField(FieldAttributes f) {
-		return Arrays.asList(modo_SERIALIZACAO.CAMPOS_A_OMITIR).contains(f.getName());
+		String[] CAMPOS_A_OMITIR = modo_SERIALIZACAO.CAMPOS_A_OMITIR.get(f.getDeclaringClass());
+		if(CAMPOS_A_OMITIR == null) {
+			return false;
+		}
+		return Arrays.asList(CAMPOS_A_OMITIR).contains(f.getName());
 	}
 
 	@Override
