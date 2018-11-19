@@ -16,6 +16,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import br.uniriotec.bsi.tp2.JogoTrivia_API.EstadoPartida;
+import br.uniriotec.bsi.tp2.JogoTrivia_API.Interacao;
 import br.uniriotec.bsi.tp2.JogoTrivia_API.Opcao;
 import br.uniriotec.bsi.tp2.JogoTrivia_API.Participante;
 import br.uniriotec.bsi.tp2.JogoTrivia_API.Partida;
@@ -110,6 +111,20 @@ public class TriviaService {
 		Gson gson = new GsonBuilder()
 				.setExclusionStrategies(new GenericExclusionStrategy(MODO_SERIALIZACAO.QUESTAO_EM_JOGO)).create();
 		return gson.toJson(questoesARemover);
+	}
+	
+	@POST
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED + CHARSET)
+	@Produces(MediaType.APPLICATION_JSON + CHARSET)
+	@Path("registrarInteracao/")
+	public String registrarInteracao(@FormParam("interacao") String json_interacao, @FormParam("idPartida") int idParticipante) {
+		Gson gson = new GsonBuilder().create();
+		Interacao interacao = gson.fromJson(json_interacao, Interacao.class);
+		Participante participante = PARTICIPANTE_DAO.find(idParticipante);
+		participante.adicionarInteracao(interacao);
+		PARTICIPANTE_DAO.save(participante);
+		return gson.toJson(participante);
+		
 	}
 
 	private String gerarChave(Participante p) {
