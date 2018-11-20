@@ -29,7 +29,7 @@
 
 	<servlet-mapping>
 		<servlet-name>JogoTrivia-SERVER</servlet-name>
-		<url-pattern>/</url-pattern>
+		<url-pattern>/rest/*</url-pattern>
 	</servlet-mapping>
 
 </web-app>
