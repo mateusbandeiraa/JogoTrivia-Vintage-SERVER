@@ -33,6 +33,7 @@ public class Dao<T> implements GenericDataSource<T>{
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
 		T result = em.find(persistedClass, id);
+		em.getTransaction().commit();
 		em.close();
 		return result;
 	}
@@ -43,6 +44,7 @@ public class Dao<T> implements GenericDataSource<T>{
 		Query q = em.createQuery("FROM " + persistedClass.getSimpleName()); // Não é bonito, mas funciona.
 		@SuppressWarnings("unchecked")
 		List<T> result = q.getResultList();
+		em.getTransaction().commit();
 		em.close();
 		return result;
 	}
