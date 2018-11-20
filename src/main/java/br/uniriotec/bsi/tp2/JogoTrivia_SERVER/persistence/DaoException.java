@@ -25,6 +25,7 @@ public class DaoException extends PersistenceException implements ExceptionMappe
 
 	@Override
 	public Response toResponse(PersistenceException exception) {
+		exception.printStackTrace();
 		return Response.status(STATUS).entity(new MensagemErro(STATUS, CodigoErro.CONEXAO_BD,  MENSAGEM))
 				.type(MediaType.APPLICATION_JSON + ";charset=utf8").build();
 	}
