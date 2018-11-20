@@ -50,7 +50,7 @@ public class TriviaService {
 	@Produces(MediaType.APPLICATION_JSON + CHARSET)
 	@Path("obterPartida/{id}")
 	public String obterPartida(@PathParam("id") int id) {
-		Partida partida = PARTIDA_DAO.find(1);
+		Partida partida = PARTIDA_DAO.find(id);
 		Gson gson = new GsonBuilder()
 				.setExclusionStrategies(new GenericExclusionStrategy(MODO_SERIALIZACAO.PARTIDA_INEDITA)).create();
 		return gson.toJson(partida);
