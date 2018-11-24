@@ -1,5 +1,6 @@
 package br.uniriotec.bsi.tp2.JogoTrivia_SERVER.service;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -17,19 +18,26 @@ import javax.ws.rs.core.Response.Status;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import br.uniriotec.bsi.tp2.JogoTrivia_API.ConjuntoAlternativas;
 import br.uniriotec.bsi.tp2.JogoTrivia_API.ConjuntoMultiplo;
+import br.uniriotec.bsi.tp2.JogoTrivia_API.ConjuntoUnitario;
 import br.uniriotec.bsi.tp2.JogoTrivia_API.EstadoPartida;
 import br.uniriotec.bsi.tp2.JogoTrivia_API.Interacao;
 import br.uniriotec.bsi.tp2.JogoTrivia_API.Jogo;
+import br.uniriotec.bsi.tp2.JogoTrivia_API.Opcao;
 import br.uniriotec.bsi.tp2.JogoTrivia_API.Participante;
 import br.uniriotec.bsi.tp2.JogoTrivia_API.Partida;
 import br.uniriotec.bsi.tp2.JogoTrivia_API.Questao;
 import br.uniriotec.bsi.tp2.JogoTrivia_SERVER.persistence.JogoDao;
 import br.uniriotec.bsi.tp2.JogoTrivia_SERVER.persistence.JogoDataSource;
+import br.uniriotec.bsi.tp2.JogoTrivia_SERVER.persistence.OpcaoDao;
+import br.uniriotec.bsi.tp2.JogoTrivia_SERVER.persistence.OpcaoDataSource;
 import br.uniriotec.bsi.tp2.JogoTrivia_SERVER.persistence.ParticipanteDao;
 import br.uniriotec.bsi.tp2.JogoTrivia_SERVER.persistence.ParticipanteDataSource;
 import br.uniriotec.bsi.tp2.JogoTrivia_SERVER.persistence.PartidaDao;
 import br.uniriotec.bsi.tp2.JogoTrivia_SERVER.persistence.PartidaDataSource;
+import br.uniriotec.bsi.tp2.JogoTrivia_SERVER.persistence.QuestaoDao;
+import br.uniriotec.bsi.tp2.JogoTrivia_SERVER.persistence.QuestaoDataSource;
 import br.uniriotec.bsi.tp2.JogoTrivia_SERVER.serialization.GenericExclusionStrategy;
 import br.uniriotec.bsi.tp2.JogoTrivia_SERVER.serialization.MODO_SERIALIZACAO;
 
@@ -39,6 +47,8 @@ public class TriviaService {
 	private static final PartidaDataSource PARTIDA_DAO = new PartidaDao();
 	private static final ParticipanteDataSource PARTICIPANTE_DAO = new ParticipanteDao();
 	private static final JogoDataSource JOGO_DAO = new JogoDao();
+	private static final QuestaoDataSource QUESTAO_DAO = new QuestaoDao();
+	private static final OpcaoDataSource OPCAO_DAO = new OpcaoDao();
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON + CHARSET)
@@ -112,14 +122,24 @@ public class TriviaService {
 	}
 
 	@POST
-	@Consumes(MediaType.APPLICATION_JSON + CHARSET)
+	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON + CHARSET)
 	@Path("registrarInteracao/")
-	public String registrarInteracao(@FormParam("interacao") String json_interacao,
-			@FormParam("idPartida") int idParticipante) {
+	public String registrarInteracao(@FormParam("idPartida")int idPartida, @FormParam("idQuestao") int idQuestao, @FormParam("idOpcao") int idOpcao,
+			@FormParam("idParticipante") int idParticipante, @FormParam("chave") String chave) {
 		Gson gson = new GsonBuilder().create();
-		Interacao interacao = gson.fromJson(json_interacao, Interacao.class);
+		Partida partida = PARTIDA_DAO.find(idPartida);
 		Participante participante = PARTICIPANTE_DAO.find(idParticipante);
+		Questao questao = QUESTAO_DAO.find(idQuestao);
+		Opcao opcao = OPCAO_DAO.find(idOpcao);
+
+		ConjuntoAlternativas solucao = new ConjuntoUnitario(opcao);
+		Interacao interacao = new Interacao(questao, participante, solucao, new Date(), partida);
+
+		if (!participante.getChave().equals(chave)) {
+			throw new WebApplicationException(401);
+		}
+
 		participante.adicionarInteracao(interacao);
 		PARTICIPANTE_DAO.save(participante);
 		return gson.toJson(participante);
@@ -137,7 +157,7 @@ public class TriviaService {
 	}
 
 	@POST
-	@Consumes(MediaType.APPLICATION_JSON + CHARSET)
+	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON + CHARSET)
 	@Path("iniciarPartida/")
 	public Response iniciarPartida(@FormParam("idPartida") int idPartida) {
@@ -157,7 +177,7 @@ public class TriviaService {
 		PARTIDA_DAO.update(partida);
 		return Response.status(Status.OK).build();
 	}
-	
+
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON + CHARSET)

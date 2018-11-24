@@ -122,3 +122,22 @@ function obterPartidasDisponiveis(callback) {
 		}
 	});
 }
+
+function registrarInteracao(idPartida, idQuestao, idOpcao, idParticipante, chave, callback) {
+	$.ajax({
+		url: ENDPOINT + "registrarInteracao/",
+		type: "POST",
+		data: {
+			idPartida:idPartida,
+			idQuestao: idQuestao,
+			idOpcao: idOpcao,
+			idParticipante: idParticipante,
+			chave: chave
+		},
+		contentType: "application/json",
+		success: function (e) {
+			this.participante = e;
+			callback();
+		}
+	});
+}

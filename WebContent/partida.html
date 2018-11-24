@@ -28,7 +28,7 @@
 
     <div class="container">
         <div class="mb-3">
-            <input class="form-control" type="text" id="nickname">
+            <input class="form-control" type="text" id="nickname" required="required">
             <button type="button" class="btn btn-primary btn-block mt-2" id="btn-select-nickname">Enviar</button>
         </div>
     </div>
@@ -36,7 +36,8 @@
         $("#btn-select-nickname").click(function (e) {
             var nickname = $("#nickname").val();
             matricularParticipante(nickname, idPartida, atualizarPartida);
-            setInterval(function () { obterQuestaoAtual(renderizarQuestao) }, 500);
+            obterQuestaoAtual(renderizarQuestao);
+            //setInterval(function () { obterQuestaoAtual(renderizarQuestao) }, 500);
         });
 
         function atualizarPartida() {
@@ -79,8 +80,8 @@
             tempoParaResposta.setTime(tempoParaResposta.getTime() + (questaoAtual.tempoDisponivel * 1000));
             tempoParaResposta.setTime(tempoParaResposta.getTime() - Date.now());
             tempoParaResposta = tempoParaResposta.getTime() / 1000;
-            
-            if(tempoParaResposta < 0){
+
+            if (tempoParaResposta < 0) {
                 tempoParaResposta = 0;
             }
 
@@ -89,6 +90,17 @@
             $(".container").html(htmlQuestao + htmlOpcoes);
 
             $("#ampulheta").css("transition", "all linear " + tempoParaResposta + "s");
+            
+            $("[data-id-opcao]").on("click", function (e) {
+                var interacao = {
+                    questao: questaoAtual,
+                    partida: partidaAtual,
+                    participante: participante,
+                    conjuntoSolucao: { opcao: { id: e.currentTarget.attributes["data-id-opcao"].value } }
+                }
+
+                registrarInteracao(partidaAtual.id, questaoAtual.id, e.currentTarget.attributes["data-id-opcao"].value, participante.id, participante.chave);
+            });
 
             setTimeout(function () { $("#ampulheta").addClass("ativo") }, 1);
         }
