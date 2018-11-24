@@ -35,6 +35,7 @@ a.card, a.card:hover{
 
 #texto-pergunta{
     width: 70%;
+    font-size: 1.8em;
 }
 #box-ampulheta{
     width: 30%;
@@ -88,4 +89,23 @@ a.card, a.card:hover{
 }
 .card-participante>.nome-participante{
     font-size: 20pt;
+}
+
+#ampulheta{
+    background:-moz-linear-gradient(to top, green 50%, red 50%);
+    background: -webkit-linear-gradient(to top, green 50%, red 50%);
+    background: linear-gradient(to top, green 50%, red 50%);
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    background-clip: text;
+   -webkit-text-fill-color:transparent;
+   background-size: 100% 200%;
+   -webkit-transition: all linear 5s;
+   -moz-transition: all linear 5s;
+   transition: all linear 5s;
+   background-position: left bottom;
+}
+
+#ampulheta.ativo{
+    background-position: left top; 
 }

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>JogoTrivia</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+    <script src="main.js"></script>
+    <script>
+        carregarElementos();
+        var url = new URL(window.location.href);
+        idPartida = url.searchParams.get("idPartida");
+        questaoAtual = null;
+    </script>
+</head>
+
+<body>
+    <div class="header">Escolha um nickname</div>
+
+    <div class="container">
+        <div class="mb-3">
+            <input class="form-control" type="text" id="nickname">
+            <button type="button" class="btn btn-primary btn-block mt-2" id="btn-select-nickname">Enviar</button>
+        </div>
+    </div>
+    <script>
+        $("#btn-select-nickname").click(function (e) {
+            var nickname = $("#nickname").val();
+            matricularParticipante(nickname, idPartida, atualizarPartida);
+            setInterval(function () { obterQuestaoAtual(renderizarQuestao) }, 500);
+        });
+
+        function atualizarPartida() {
+            $("#nickname").attr("readonly", "readonly");
+            $(".header").html("Aguarde o início da partida");
+        }
+
+        function obterQuestaoAtual(callback) {
+            console.log("atualizando partida...");
+            $.ajax({
+                url: ENDPOINT + "obterPartida/" + idPartida,
+                type: "GET",
+                success: function (result) {
+                    partidaAtual = result;
+                    if (questaoAtual == null || partidaAtual.questaoAtual.id != questaoAtual.id)
+                        var requerAtualizacao = true;
+                    questaoAtual = partidaAtual.questaoAtual;
+                    callback(questaoAtual, requerAtualizacao);
+                }
+            });
+        }
+
+        function renderizarQuestao(questaoAtual, requerAtualizacao) {
+            if (!requerAtualizacao)
+                return;
+            console.log("questao requer atualizacao");
+            var htmlQuestao = cardQuestao;
+            htmlQuestao = htmlQuestao.replace(/%texto-pergunta%/g, questaoAtual.textoPergunta);
+            htmlQuestao = htmlQuestao.replace(/%numero-questao%/g, partidaAtual.numeroQuestaoAtual);
+
+            var htmlOpcoes = "";
+
+            questaoAtual.opcoes.opcoes.forEach(element => {
+                var htmlOpcao = cardAlternativaMultiplaEscolha.replace(/%id-opcao%/g, element.id);
+                htmlOpcao = htmlOpcao.replace(/%texto-alternativa%/g, element.texto);
+                htmlOpcoes += htmlOpcao;
+            });
+
+            tempoParaResposta = new Date(partidaAtual.dataQuestaoAtual);
+            tempoParaResposta.setTime(tempoParaResposta.getTime() + (questaoAtual.tempoDisponivel * 1000));
+            tempoParaResposta.setTime(tempoParaResposta.getTime() - Date.now());
+            tempoParaResposta = tempoParaResposta.getTime() / 1000;
+            
+            if(tempoParaResposta < 0){
+                tempoParaResposta = 0;
+            }
+
+
+            $(".header").html("Escolha uma");
+            $(".container").html(htmlQuestao + htmlOpcoes);
+
+            $("#ampulheta").css("transition", "all linear " + tempoParaResposta + "s");
+
+            setTimeout(function () { $("#ampulheta").addClass("ativo") }, 1);
+        }
+    </script>
+</body>
+
+</html>

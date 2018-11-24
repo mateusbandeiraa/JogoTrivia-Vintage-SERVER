@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>JogoTrivia</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+    <script src="main.js"></script>
+    <script>
+        carregarElementos();
+    </script>
+</head>
+
+<body>
+
+    <h1>ADMIN UTILS JOGO TRIVIA</h1>
+
+    <h2>
+        PARTIDA
+    </h2>
+
+    <input type="text" id="idPartida" placeholder="id partida"><br />
+    <input type="text" id="idJogo" placeholder="id jogo"><br />
+    <button id="btn-criar-partida" type="button">Criar partida</button><br />
+    <button id="btn-iniciar-partida" type="button">Iniciar partida</button><br />
+    <button id="btn-proxima-questao" type="button">Próxima questao</button><br />
+
+    <textarea id="console"></textarea>
+    <script>
+        function escreverConsole(texto) {
+            $("#console").html(texto);
+        }
+        $("#btn-criar-partida").click(function () {
+            criarPartida($("#idJogo").val(), escreverConsole)
+        }
+        );
+        $("#btn-iniciar-partida").click(function () {
+            iniciarPartida($("#idPartida").val(), escreverConsole)
+        }
+        );
+        $("#btn-proxima-questao").click(function () {
+            proximaQuestao($("#idPartida").val(), escreverConsole)
+        });
+    </script>
+</body>
+
+</html>

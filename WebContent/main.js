@@ -1,7 +1,4 @@
 ENDPOINT = "rest/";
-idPartida = 26;
-questaoRequerAtualizacao = false;
-questaoAtual = null;
 
 function carregarElementos() {
 	$.get("./card-ajudas.html", function (e) {
@@ -10,8 +7,8 @@ function carregarElementos() {
 	$.get("./card-alternativa-aberta.html", function (e) {
 		cardAlternativaAberta = e;
 	}, "html");
-	$.get("./card-alternativa-multipla-escolha", function (e) {
-		cardAlternativaMultiplaEscolha
+	$.get("./card-alternativa-multipla-escolha.html", function (e) {
+		cardAlternativaMultiplaEscolha = e;
 	}, "html");
 	$.get("./card-partida.html", function (e) {
 		cardPartida = e;
@@ -21,9 +18,7 @@ function carregarElementos() {
 	}, "html");
 
 }
-function matricularParticipante() {
-	var nickname = $("nickname").value;
-
+function matricularParticipante(nickname, idPartida, callback) {
 	var dados = { idpartida: idPartida, nickname: nickname };
 
 	$.ajax({
@@ -33,11 +28,12 @@ function matricularParticipante() {
 		data: dados,
 		success: function (result) {
 			participante = result;
+			callback(participante);
 		}
 	});
 }
 
-function iniciarPartida() {
+function iniciarPartida(idPartida, callback) {
 
 	var dados = { idPartida: idPartida };
 
@@ -47,16 +43,30 @@ function iniciarPartida() {
 		contentType: "application/json",
 		data: dados,
 		success: function (result) {
-			obterQuestaoAtual();
-			exibirQuestaoAtual(questaoAtual);
+			callback(result);
+		}
+	});
+}
+
+function criarPartida(idJogo, callback) {
+
+	var dados = { idJogo: idJogo };
+
+	$.ajax({
+		url: ENDPOINT + "criarPartida/",
+		type: "POST",
+		contentType: "application/json",
+		data: dados,
+		success: function (result) {
+			callback(result);
 		}
 	});
 
-	setInterval(atualizarQuestao, 1500);
+	// setInterval(atualizarQuestao, 1500);
 
 }
 
-function proximaQuestao() {
+function proximaQuestao(idPartida, callback) {
 	var dados = { idPartida: idPartida };
 
 	$.ajax({
@@ -65,8 +75,7 @@ function proximaQuestao() {
 		contentType: "application/json",
 		data: dados,
 		success: function (result) {
-			obterQuestaoAtual();
-			exibirQuestaoAtual(questaoAtual);
+			callback(result);
 		}
 	});
 }
@@ -79,7 +88,6 @@ function obterQuestaoAtual() {
 			if (result != questaoAtual)
 				questaoRequerAtualizacao = true;
 			questaoAtual = result;
-			return questaoAtual;
 		}
 	});
 }
