@@ -20,11 +20,14 @@ import com.google.gson.GsonBuilder;
 import br.uniriotec.bsi.tp2.JogoTrivia_API.ConjuntoMultiplo;
 import br.uniriotec.bsi.tp2.JogoTrivia_API.EstadoPartida;
 import br.uniriotec.bsi.tp2.JogoTrivia_API.Interacao;
+import br.uniriotec.bsi.tp2.JogoTrivia_API.Jogo;
 import br.uniriotec.bsi.tp2.JogoTrivia_API.Participante;
 import br.uniriotec.bsi.tp2.JogoTrivia_API.Partida;
 import br.uniriotec.bsi.tp2.JogoTrivia_API.Questao;
+import br.uniriotec.bsi.tp2.JogoTrivia_SERVER.persistence.JogoDao;
+import br.uniriotec.bsi.tp2.JogoTrivia_SERVER.persistence.JogoDataSource;
+import br.uniriotec.bsi.tp2.JogoTrivia_SERVER.persistence.ParticipanteDao;
 import br.uniriotec.bsi.tp2.JogoTrivia_SERVER.persistence.ParticipanteDataSource;
-import br.uniriotec.bsi.tp2.JogoTrivia_SERVER.persistence.ParticipanteDummyDao;
 import br.uniriotec.bsi.tp2.JogoTrivia_SERVER.persistence.PartidaDao;
 import br.uniriotec.bsi.tp2.JogoTrivia_SERVER.persistence.PartidaDataSource;
 import br.uniriotec.bsi.tp2.JogoTrivia_SERVER.serialization.GenericExclusionStrategy;
@@ -34,7 +37,8 @@ import br.uniriotec.bsi.tp2.JogoTrivia_SERVER.serialization.MODO_SERIALIZACAO;
 public class TriviaService {
 	private static final String CHARSET = ";charset=utf8";
 	private static final PartidaDataSource PARTIDA_DAO = new PartidaDao();
-	private static final ParticipanteDataSource PARTICIPANTE_DAO = new ParticipanteDummyDao();
+	private static final ParticipanteDataSource PARTICIPANTE_DAO = new ParticipanteDao();
+	private static final JogoDataSource JOGO_DAO = new JogoDao();
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON + CHARSET)
@@ -62,7 +66,7 @@ public class TriviaService {
 	@Path("matricularParticipante/")
 	public String matricularParticipante(@FormParam("idPartida") int idPartida,
 			@FormParam("nickname") String nickname) {
-		Partida partida = new Partida(idPartida, null);
+		Partida partida = PARTIDA_DAO.find(idPartida);
 		Participante participante = new Participante(nickname, 0, 0, partida);
 		participante.setChave(gerarChave(participante));
 		PARTICIPANTE_DAO.save(participante);
@@ -151,6 +155,16 @@ public class TriviaService {
 		Partida partida = PARTIDA_DAO.find(idPartida);
 		partida.proximaQuestao();
 		PARTIDA_DAO.update(partida);
+		return Response.status(Status.OK).build();
+	}
+	
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON + CHARSET)
+	public Response criarPartida(@FormParam("idJogo") int idJogo) {
+		Jogo jogo = JOGO_DAO.find(idJogo);
+		Partida partida = new Partida(jogo);
+		PARTIDA_DAO.save(partida);
 		return Response.status(Status.OK).build();
 	}
 
