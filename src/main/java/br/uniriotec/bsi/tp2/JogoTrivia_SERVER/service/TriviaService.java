@@ -17,9 +17,9 @@ import javax.ws.rs.core.Response.Status;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import br.uniriotec.bsi.tp2.JogoTrivia_API.ConjuntoMultiplo;
 import br.uniriotec.bsi.tp2.JogoTrivia_API.EstadoPartida;
 import br.uniriotec.bsi.tp2.JogoTrivia_API.Interacao;
-import br.uniriotec.bsi.tp2.JogoTrivia_API.Opcao;
 import br.uniriotec.bsi.tp2.JogoTrivia_API.Participante;
 import br.uniriotec.bsi.tp2.JogoTrivia_API.Partida;
 import br.uniriotec.bsi.tp2.JogoTrivia_API.Questao;
@@ -100,7 +100,7 @@ public class TriviaService {
 
 		Partida partida = participante.getPartida();
 		Questao questaoAtual = partida.getQuestaoAtual();
-		List<Opcao> questoesARemover = questaoAtual.obterOpcoesARemover();
+		ConjuntoMultiplo questoesARemover = questaoAtual.getOpcoesARemover();
 
 		Gson gson = new GsonBuilder()
 				.setExclusionStrategies(new GenericExclusionStrategy(MODO_SERIALIZACAO.QUESTAO_EM_JOGO)).create();
@@ -144,7 +144,7 @@ public class TriviaService {
 	}
 
 	@POST
-	@Consumes(MediaType.APPLICATION_JSON + CHARSET)
+	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON + CHARSET)
 	@Path("proximaQuestao/")
 	public Response proximaQuestão(@FormParam("idPartida") int idPartida) {
