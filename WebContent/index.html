@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>JogoTrivia</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+    <script src="main.js"></script>
+    <script>
+       carregarElementos();
+    </script>
+</head>
+
+<body>
+    <div class="header">Selecione uma partida</div>
+
+    <div class="container">
+
+    </div>
+    <script>
+        function renderizarQuestoesDisponiveis(partidasDisponiveis) {
+            var container = $(".container");
+            partidasDisponiveis.forEach(element => {
+                var htmlPartida = cardPartida;
+                var nomePartida = element.JOGO_MODELO.nome;
+                var idPartida = element.idPartida;
+                var numeroParticipantes = element.participantes.length;
+
+                if(numeroParticipantes == 1){
+                    numeroParticipantes += " participante";
+                } else{
+                    numeroParticipantes += " participantes";
+                }
+
+                htmlPartida = htmlPartida.replace(/%nome-partida%/g, nomePartida);
+                htmlPartida = htmlPartida.replace(/%numero-participantes%/g, numeroParticipantes);
+                htmlPartida = htmlPartida.replace(/%id-partida%/g, idPartida);
+                container.append(htmlPartida);
+            });
+        }
+        obterPartidasDisponiveis(renderizarQuestoesDisponiveis);
+    </script>
+</body>
+
+</html>
