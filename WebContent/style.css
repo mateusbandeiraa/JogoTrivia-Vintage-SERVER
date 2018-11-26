@@ -1,7 +1,8 @@
-body{
+body {
     margin: 0;
 }
-.header{
+
+.header {
     background-color: #2e2e2e;
     height: 10vh;
     margin-bottom: 10px;
@@ -13,44 +14,62 @@ body{
     font-weight: 600;
 }
 
-a.card, a.card:hover{
+a.card,
+a.card:hover {
     color: white;
     text-decoration: inherit;
 }
 
-.card-body{
+.card-body {
     padding: 5px;
     display: flex;
     justify-content: space-between;
 }
 
-.card-partida{
+.card-partida,
+.card-alternativa {
     margin-bottom: 10px;
 }
 
-.card-questao{
+.card-alternativa {
+    background-color: cornflowerblue !important;
+}
+
+.card-alternativa.alternativa-certa {
+    background-color: greenyellow !important;
+}
+
+.card-alternativa.alternativa-selecionada {
+    background-color: darkorange !important;
+}
+
+.card-alternativa.alternativa-selecionada.alternativa-certa {
+    background-color: green !important;
+}
+.card-questao {
     display: flex;
     justify-content: space-between;
 }
 
-#texto-pergunta{
+#texto-pergunta {
     width: 70%;
     font-size: 1.8em;
 }
-#box-ampulheta{
+
+#box-ampulheta {
     width: 30%;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.card-ajudas{
+.card-ajudas {
     display: flex;
     padding: 0 30%;
     justify-content: space-around;
 }
 
-.btn-ajuda{
+.btn-ajuda {
     font-size: 15pt;
     font-weight: 700;
     display: flex;
@@ -61,19 +80,19 @@ a.card, a.card:hover{
     height: 60px;
 }
 
-#ajudaRemoverQuestoes{
+#ajudaRemoverQuestoes {
     background-color: red;
     color: white;
 }
 
-#ajudaTempoBonus{
+#ajudaTempoBonus {
     background-color: gold;
     color: white;
 }
 
-#numero-questao{
+#numero-questao {
     background: dodgerblue;
-    margin: 5px; 
+    margin: 5px;
     width: 60px;
     height: 60px;
     border-radius: 20%;
@@ -82,30 +101,32 @@ a.card, a.card:hover{
     align-items: center;
     font-size: 30pt;
 }
-.card-participante{
+
+.card-participante {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
-.card-participante>.nome-participante{
+
+.card-participante>.nome-participante {
     font-size: 20pt;
 }
 
-#ampulheta{
-    background:-moz-linear-gradient(to top, green 50%, red 50%);
+#ampulheta {
+    background: -moz-linear-gradient(to top, green 50%, red 50%);
     background: -webkit-linear-gradient(to top, green 50%, red 50%);
     background: linear-gradient(to top, green 50%, red 50%);
     -webkit-background-clip: text;
     -moz-background-clip: text;
     background-clip: text;
-   -webkit-text-fill-color:transparent;
-   background-size: 100% 200%;
-   -webkit-transition: all linear 5s;
-   -moz-transition: all linear 5s;
-   transition: all linear 5s;
-   background-position: left bottom;
+    -webkit-text-fill-color: transparent;
+    background-size: 100% 200%;
+    -webkit-transition: all linear 5s;
+    -moz-transition: all linear 5s;
+    transition: all linear 5s;
+    background-position: left bottom;
 }
 
-#ampulheta.ativo{
-    background-position: left top; 
+#ampulheta.ativo {
+    background-position: left top;
 }

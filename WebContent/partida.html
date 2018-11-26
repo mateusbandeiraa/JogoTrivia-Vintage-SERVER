@@ -36,8 +36,8 @@
         $("#btn-select-nickname").click(function (e) {
             var nickname = $("#nickname").val();
             matricularParticipante(nickname, idPartida, atualizarPartida);
-            obterQuestaoAtual(renderizarQuestao);
-            //setInterval(function () { obterQuestaoAtual(renderizarQuestao) }, 500);
+            obterQuestaoAtual(renderizarQuestao, exibirResposta);
+            setInterval(function () { obterQuestaoAtual(renderizarQuestao, exibirResposta) }, 500);
         });
 
         function atualizarPartida() {
@@ -45,25 +45,30 @@
             $(".header").html("Aguarde o início da partida");
         }
 
-        function obterQuestaoAtual(callback) {
+        function obterQuestaoAtual(callback1, callback2) {
             console.log("atualizando partida...");
             $.ajax({
                 url: ENDPOINT + "obterPartida/" + idPartida,
                 type: "GET",
                 success: function (result) {
                     partidaAtual = result;
-                    if (questaoAtual == null || partidaAtual.questaoAtual.id != questaoAtual.id)
-                        var requerAtualizacao = true;
-                    questaoAtual = partidaAtual.questaoAtual;
-                    callback(questaoAtual, requerAtualizacao);
+                    if (questaoAtual == null || (partidaAtual.questaoAtual.id != questaoAtual.id)) {
+                        questaoAtual = partidaAtual.questaoAtual;
+                        questaoTemResposta = false;
+                        callback1(partidaAtual.questaoAtual);
+                    }
+
+                    if (!questaoTemResposta && partidaAtual.questaoAtual.conjuntoSolucao != null) {
+                        questaoAtual = partidaAtual.questaoAtual;
+                        callback2(questaoAtual);
+                        questaoTemResposta = true;
+                    }
+
                 }
             });
         }
 
         function renderizarQuestao(questaoAtual, requerAtualizacao) {
-            if (!requerAtualizacao)
-                return;
-            console.log("questao requer atualizacao");
             var htmlQuestao = cardQuestao;
             htmlQuestao = htmlQuestao.replace(/%texto-pergunta%/g, questaoAtual.textoPergunta);
             htmlQuestao = htmlQuestao.replace(/%numero-questao%/g, partidaAtual.numeroQuestaoAtual);
@@ -90,8 +95,9 @@
             $(".container").html(htmlQuestao + htmlOpcoes);
 
             $("#ampulheta").css("transition", "all linear " + tempoParaResposta + "s");
-            
+
             $("[data-id-opcao]").on("click", function (e) {
+                $(e.currentTarget).addClass("alternativa-selecionada");
                 var interacao = {
                     questao: questaoAtual,
                     partida: partidaAtual,
@@ -103,6 +109,14 @@
             });
 
             setTimeout(function () { $("#ampulheta").addClass("ativo") }, 1);
+        }
+
+        function exibirResposta(questaoAtual) {
+            $('[data-id-opcao="' + questaoAtual.conjuntoSolucao.opcao.id + '"]').addClass("alternativa-certa");
+        }
+
+        function mostrarRanking(ranking) {
+
         }
     </script>
 </body>

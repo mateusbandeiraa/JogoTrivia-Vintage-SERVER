@@ -15,6 +15,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import com.google.gson.ExclusionStrategy;
+import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -65,8 +67,15 @@ public class TriviaService {
 	@Path("obterPartida/{id}")
 	public String obterPartida(@PathParam("id") int id) {
 		Partida partida = PARTIDA_DAO.find(id);
-		Gson gson = new GsonBuilder()
-				.setExclusionStrategies(new GenericExclusionStrategy(MODO_SERIALIZACAO.PARTIDA_INEDITA)).create();
+		Gson gson;
+		if (partida.obterDataMaximaParaResposta().before(new Date()))
+			gson = new GsonBuilder()
+					.setExclusionStrategies(new GenericExclusionStrategy(MODO_SERIALIZACAO.PARTIDA_INEDITA)).create();
+		else
+			gson = new GsonBuilder().setExclusionStrategies(
+					new ExclusionStrategy[] { new GenericExclusionStrategy(MODO_SERIALIZACAO.PARTIDA_INEDITA),
+							new GenericExclusionStrategy(MODO_SERIALIZACAO.QUESTAO_EM_JOGO) })
+					.create();
 		return gson.toJson(partida);
 	}
 
@@ -91,9 +100,13 @@ public class TriviaService {
 	public String obterQuestaoAtual(@PathParam("idPartida") int idPartida) {
 		Partida partida = PARTIDA_DAO.find(idPartida);
 		Questao questaoAtual = partida.getQuestaoAtual();
-		System.out.println(questaoAtual);
-		Gson gson = new GsonBuilder()
-				.setExclusionStrategies(new GenericExclusionStrategy(MODO_SERIALIZACAO.QUESTAO_EM_JOGO)).create();
+		Gson gson;
+
+		if (partida.obterDataMaximaParaResposta().before(new Date()))
+			gson = new GsonBuilder().create();
+		else
+			gson = new GsonBuilder()
+					.setExclusionStrategies(new GenericExclusionStrategy(MODO_SERIALIZACAO.QUESTAO_EM_JOGO)).create();
 		return gson.toJson(questaoAtual);
 	}
 
@@ -125,8 +138,9 @@ public class TriviaService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON + CHARSET)
 	@Path("registrarInteracao/")
-	public String registrarInteracao(@FormParam("idPartida")int idPartida, @FormParam("idQuestao") int idQuestao, @FormParam("idOpcao") int idOpcao,
-			@FormParam("idParticipante") int idParticipante, @FormParam("chave") String chave) {
+	public String registrarInteracao(@FormParam("idPartida") int idPartida, @FormParam("idQuestao") int idQuestao,
+			@FormParam("idOpcao") int idOpcao, @FormParam("idParticipante") int idParticipante,
+			@FormParam("chave") String chave) {
 		Gson gson = new GsonBuilder().create();
 		Partida partida = PARTIDA_DAO.find(idPartida);
 		Participante participante = PARTICIPANTE_DAO.find(idParticipante);
@@ -161,6 +175,7 @@ public class TriviaService {
 	@Produces(MediaType.APPLICATION_JSON + CHARSET)
 	@Path("iniciarPartida/")
 	public Response iniciarPartida(@FormParam("idPartida") int idPartida) {
+		System.out.println(idPartida);
 		Partida partida = PARTIDA_DAO.find(idPartida);
 		partida.iniciarPartida();
 		PARTIDA_DAO.update(partida);
@@ -181,6 +196,7 @@ public class TriviaService {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON + CHARSET)
+	@Path("criarPartida/")
 	public Response criarPartida(@FormParam("idJogo") int idJogo) {
 		Jogo jogo = JOGO_DAO.find(idJogo);
 		Partida partida = new Partida(jogo);
