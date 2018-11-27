@@ -22,7 +22,10 @@ public class Dao<T> implements GenericDataSource<T>{
 	}
 
 	protected void setUp() {
-		emf = Persistence.createEntityManagerFactory("br.uniriotec.bsi.tp2.JogoTrivia");
+		String unit = System.getenv("dbUnit");
+		if(unit == null)
+			unit = "br.uniriotec.bsi.tp2.JogoTriviaTest";
+		emf = Persistence.createEntityManagerFactory(unit);
 	}
 
 	protected void tearDown() {
