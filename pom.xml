@@ -48,7 +48,7 @@
 				<version>2.4</version>
 				<configuration>
 					<warSourceDirectory>WebContent</warSourceDirectory>
-					<webXml>src\main\webapp\WEB-INF\web.xml</webXml>
+					<webXml>WebContent\WEB-INF\web.xml</webXml>
 					<failOnMissingWebXml>true</failOnMissingWebXml>
 				</configuration>
 			</plugin>
