@@ -3,8 +3,10 @@ package br.uniriotec.bsi.tp2.JogoTrivia_SERVER.serialization;
 import java.util.HashMap;
 import java.util.Map;
 
+import br.uniriotec.bsi.tp2.JogoTrivia_API.Interacao;
 import br.uniriotec.bsi.tp2.JogoTrivia_API.Jogo;
 import br.uniriotec.bsi.tp2.JogoTrivia_API.Opcao;
+import br.uniriotec.bsi.tp2.JogoTrivia_API.Participante;
 import br.uniriotec.bsi.tp2.JogoTrivia_API.Partida;
 import br.uniriotec.bsi.tp2.JogoTrivia_API.Questao;
 
@@ -30,6 +32,8 @@ public enum MODO_SERIALIZACAO {
 		case "PARTICIPANTE":
 			CAMPOS_A_OMITIR.put(Partida.class, new String[] { "limiteAjudasRemoverOpcoes", "limiteAjudasTempoBonus",
 					"numeroQuestaoAtual", "estadoAtual", "participantes" });
+			CAMPOS_A_OMITIR.put(Participante.class, new String[] { "partida" });
+			CAMPOS_A_OMITIR.put(Interacao.class, new String[] { "participante" });
 		default:
 			break;
 		}

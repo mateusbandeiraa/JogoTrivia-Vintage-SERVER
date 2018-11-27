@@ -19,7 +19,7 @@ function carregarElementos() {
 
 }
 function matricularParticipante(nickname, idPartida, callback) {
-	var dados = { idpartida: idPartida, nickname: nickname };
+	var dados = { idPartida: idPartida, nickname: nickname };
 
 	$.ajax({
 		url: ENDPOINT + "matricularParticipante/",
