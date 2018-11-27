@@ -80,8 +80,8 @@
                 htmlOpcao = htmlOpcao.replace(/%texto-alternativa%/g, element.texto);
                 htmlOpcoes += htmlOpcao;
             });
-
-            tempoParaResposta = new Date(partidaAtual.dataQuestaoAtual);
+            
+            tempoParaResposta = new Date(partidaAtual.dataQuestaoAtual + "UTC-2");
             tempoParaResposta.setTime(tempoParaResposta.getTime() + (questaoAtual.tempoDisponivel * 1000));
             tempoParaResposta.setTime(tempoParaResposta.getTime() - Date.now());
             tempoParaResposta = tempoParaResposta.getTime() / 1000;
