@@ -151,3 +151,13 @@ function criarJogoPadrao(callback){
 		}
 	});
 }
+
+function sincronizarHora(){
+	$.ajax({
+		url: ENDPOINT + "obterHora/",
+		type: "GET",
+		success: function (e) {
+			diferencaHora = Date.now() - new Date(e);
+		}
+	});
+}

@@ -212,6 +212,13 @@ public class TriviaService {
 		JOGO_DAO.save(jogo);
 		return new Gson().toJson(jogo);
 	}
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON + CHARSET)
+	@Path("obterHora/")
+	public String obterHora() {
+		return new Gson().toJson(new Date());
+	}
 
 	private String gerarChave(Participante p) {
 		return "1234";

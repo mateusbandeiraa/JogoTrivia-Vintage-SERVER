@@ -17,6 +17,7 @@
     <script src="main.js"></script>
     <script>
         carregarElementos();
+        sincronizarHora();
         var url = new URL(window.location.href);
         idPartida = url.searchParams.get("idPartida");
         questaoAtual = null;
@@ -81,7 +82,8 @@
                 htmlOpcoes += htmlOpcao;
             });
             
-            tempoParaResposta = new Date(partidaAtual.dataQuestaoAtual + "UTC-2");
+            tempoParaResposta = new Date(partidaAtual.dataQuestaoAtual);
+            tempoParaResposta.setTime(tempoParaResposta.getTime + diferencaHora);
             tempoParaResposta.setTime(tempoParaResposta.getTime() + (questaoAtual.tempoDisponivel * 1000));
             tempoParaResposta.setTime(tempoParaResposta.getTime() - Date.now());
             tempoParaResposta = tempoParaResposta.getTime() / 1000;
