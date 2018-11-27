@@ -16,7 +16,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import com.google.gson.ExclusionStrategy;
-import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -32,6 +31,7 @@ import br.uniriotec.bsi.tp2.JogoTrivia_API.Partida;
 import br.uniriotec.bsi.tp2.JogoTrivia_API.Questao;
 import br.uniriotec.bsi.tp2.JogoTrivia_SERVER.persistence.JogoDao;
 import br.uniriotec.bsi.tp2.JogoTrivia_SERVER.persistence.JogoDataSource;
+import br.uniriotec.bsi.tp2.JogoTrivia_SERVER.persistence.JogoDummyDao;
 import br.uniriotec.bsi.tp2.JogoTrivia_SERVER.persistence.OpcaoDao;
 import br.uniriotec.bsi.tp2.JogoTrivia_SERVER.persistence.OpcaoDataSource;
 import br.uniriotec.bsi.tp2.JogoTrivia_SERVER.persistence.ParticipanteDao;
@@ -197,11 +197,20 @@ public class TriviaService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON + CHARSET)
 	@Path("criarPartida/")
-	public Response criarPartida(@FormParam("idJogo") int idJogo) {
+	public String criarPartida(@FormParam("idJogo") int idJogo) {
 		Jogo jogo = JOGO_DAO.find(idJogo);
 		Partida partida = new Partida(jogo);
 		PARTIDA_DAO.save(partida);
-		return Response.status(Status.OK).build();
+		return new Gson().toJson(partida);
+	}
+	
+	@POST
+	@Produces(MediaType.APPLICATION_JSON + CHARSET)
+	@Path("criarJogoPadrao/")
+	public String criarPartida() {
+		Jogo jogo = new JogoDummyDao().find(0);
+		JOGO_DAO.save(jogo);
+		return new Gson().toJson(jogo);
 	}
 
 	private String gerarChave(Participante p) {

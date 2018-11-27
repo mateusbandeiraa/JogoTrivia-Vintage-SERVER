@@ -141,3 +141,13 @@ function registrarInteracao(idPartida, idQuestao, idOpcao, idParticipante, chave
 		}
 	});
 }
+
+function criarJogoPadrao(callback){
+	$.ajax({
+		url: ENDPOINT + "criarJogoPadrao/",
+		type: "POST",
+		success: function (e) {
+			callback(e);
+		}
+	});
+}

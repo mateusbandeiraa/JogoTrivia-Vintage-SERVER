@@ -30,6 +30,7 @@
 
     <input type="text" id="idPartida" placeholder="id partida"><br />
     <input type="text" id="idJogo" placeholder="id jogo"><br />
+    <button id="btn-criar-jogo" type="button">Criar jogo</button><br />
     <button id="btn-criar-partida" type="button">Criar partida</button><br />
     <button id="btn-iniciar-partida" type="button">Iniciar partida</button><br />
     <button id="btn-proxima-questao" type="button">Próxima questao</button><br />
@@ -37,8 +38,13 @@
     <textarea id="console"></textarea>
     <script>
         function escreverConsole(texto) {
-            $("#console").html(texto);
+            console.log(texto);
+            $("#console").html(JSON.stringify(texto));
         }
+        $("#btn-criar-jogo").click(function () {
+            criarJogoPadrao(escreverConsole)
+        }
+        );
         $("#btn-criar-partida").click(function () {
             criarPartida($("#idJogo").val(), escreverConsole)
         }
