@@ -31,3 +31,4 @@ buildNumber.properties
 # Mac OS
 .DS_Store
 src/main/java/META-INF/persistence.xml
+src/main/java/br/uniriotec/bsi/tp2/JogoTrivia_SERVER/persistence/DaoTest.java
