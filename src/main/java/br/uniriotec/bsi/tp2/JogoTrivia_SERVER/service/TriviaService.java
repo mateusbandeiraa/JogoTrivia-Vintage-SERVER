@@ -42,6 +42,7 @@ import br.uniriotec.bsi.tp2.JogoTrivia_SERVER.persistence.QuestaoDao;
 import br.uniriotec.bsi.tp2.JogoTrivia_SERVER.persistence.QuestaoDataSource;
 import br.uniriotec.bsi.tp2.JogoTrivia_SERVER.serialization.GenericExclusionStrategy;
 import br.uniriotec.bsi.tp2.JogoTrivia_SERVER.serialization.MODO_SERIALIZACAO;
+import br.uniriotec.bsi.tp2.JogoTrivia_SERVER.serialization.ParticipanteSerializer;
 
 @Path("/")
 public class TriviaService {
@@ -142,7 +143,8 @@ public class TriviaService {
 	public String registrarInteracao(@FormParam("idPartida") int idPartida, @FormParam("idQuestao") int idQuestao,
 			@FormParam("idOpcao") int idOpcao, @FormParam("idParticipante") int idParticipante,
 			@FormParam("chave") String chave) {
-		Gson gson = new GsonBuilder().setExclusionStrategies(new GenericExclusionStrategy(MODO_SERIALIZACAO.PARTICIPANTE)).create();
+		Gson gson = new GsonBuilder()
+				.setExclusionStrategies(new GenericExclusionStrategy(MODO_SERIALIZACAO.PARTICIPANTE)).create();
 		Partida partida = PARTIDA_DAO.find(idPartida);
 		Participante participante = PARTICIPANTE_DAO.find(idParticipante);
 		Questao questao = QUESTAO_DAO.find(idQuestao);
@@ -166,8 +168,11 @@ public class TriviaService {
 	@Path("obterClassificacao/{idPartida}")
 	public String obterClassificacao(@PathParam("idPartida") int idPartida) {
 		Partida partida = PARTIDA_DAO.find(idPartida);
+		System.out.println(partida);
 		List<Participante> top10 = partida.obterClassificacao();
-		Gson gson = new GsonBuilder().create();
+		Gson gson = new GsonBuilder()
+				.setExclusionStrategies(new GenericExclusionStrategy(MODO_SERIALIZACAO.CLASSIFICACAO))
+				.registerTypeAdapter(Participante.class, new ParticipanteSerializer()).create();
 		return gson.toJson(top10);
 	}
 
@@ -203,7 +208,7 @@ public class TriviaService {
 		PARTIDA_DAO.save(partida);
 		return new Gson().toJson(partida);
 	}
-	
+
 	@POST
 	@Produces(MediaType.APPLICATION_JSON + CHARSET)
 	@Path("criarJogoPadrao/")
@@ -212,7 +217,7 @@ public class TriviaService {
 		JOGO_DAO.save(jogo);
 		return new Gson().toJson(jogo);
 	}
-	
+
 	@GET
 	@Produces(MediaType.APPLICATION_JSON + CHARSET)
 	@Path("obterHora/")
