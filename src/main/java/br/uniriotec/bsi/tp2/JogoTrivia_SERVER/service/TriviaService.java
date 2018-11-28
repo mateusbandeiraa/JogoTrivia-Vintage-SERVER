@@ -69,7 +69,7 @@ public class TriviaService {
 	public String obterPartida(@PathParam("id") int id) {
 		Partida partida = PARTIDA_DAO.find(id);
 		Gson gson;
-		if (partida.obterDataMaximaParaResposta().before(new Date()))
+		if ((partida.getEstadoAtual() == EstadoPartida.EM_ANDAMENTO) && partida.obterDataMaximaParaResposta().before(new Date()))
 			gson = new GsonBuilder()
 					.setExclusionStrategies(new GenericExclusionStrategy(MODO_SERIALIZACAO.PARTIDA_INEDITA)).create();
 		else
