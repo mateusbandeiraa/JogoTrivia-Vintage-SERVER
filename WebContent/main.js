@@ -13,8 +13,11 @@ function carregarElementos() {
 	$.get("./card-partida.html", function (e) {
 		cardPartida = e;
 	}, "html");
-	cardQuestao = $.get("./card-questao.html", function (e) {
+	$.get("./card-questao.html", function (e) {
 		cardQuestao = e;
+	}, "html");
+	$.get("./card-participante.html", function (e) {
+		cardParticipante = e;
 	}, "html");
 
 }
@@ -158,6 +161,16 @@ function sincronizarHora(){
 		type: "GET",
 		success: function (e) {
 			diferencaHora = Date.now() - new Date(e);
+		}
+	});
+}
+
+function obterTop10(idPartida, callback){
+	$.ajax({
+		url: ENDPOINT + "obterClassificacao/" + idPartida,
+		type: "GET",
+		success: function (e) {
+			callback(e);
 		}
 	});
 }

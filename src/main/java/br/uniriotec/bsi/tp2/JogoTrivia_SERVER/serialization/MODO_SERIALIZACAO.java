@@ -24,6 +24,8 @@ public enum MODO_SERIALIZACAO {
 					new String[] { "limiteAjudasTempoBonus", "limiteAjudasRemoverOpcoes", "questoes" });
 			CAMPOS_A_OMITIR.put(Opcao.class, new String[] {"estaCerto", "ehRemovivel"});
 			CAMPOS_A_OMITIR.put(Questao.class, new String[] {"opcaoCerta"});
+			CAMPOS_A_OMITIR.put(Partida.class, new String[] { "limiteAjudasRemoverOpcoes", "limiteAjudasTempoBonus", "estadoAtual"});
+			CAMPOS_A_OMITIR.put(Participante.class, new String[] { "partida", "interacoes", "chave", "ajudasTempoBonusUsadas", "ajudasRemoverOpcoesUsadas" });
 			break;
 		case "QUESTAO_EM_JOGO":
 			CAMPOS_A_OMITIR.put(Questao.class, new String[] { "conjuntoSolucao", "opcoesARemover" });

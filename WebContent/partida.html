@@ -81,7 +81,7 @@
                 htmlOpcao = htmlOpcao.replace(/%texto-alternativa%/g, element.texto);
                 htmlOpcoes += htmlOpcao;
             });
-            
+
             tempoParaResposta = new Date(partidaAtual.dataQuestaoAtual);
             tempoParaResposta.setTime(tempoParaResposta.getTime + diferencaHora);
             tempoParaResposta.setTime(tempoParaResposta.getTime() + (questaoAtual.tempoDisponivel * 1000));
@@ -115,10 +115,23 @@
 
         function exibirResposta(questaoAtual) {
             $('[data-id-opcao="' + questaoAtual.conjuntoSolucao.opcao.id + '"]').addClass("alternativa-certa");
+            setTimeout(function(){obterTop10(partidaAtual.id, mostrarRanking)}, 3000);
         }
 
         function mostrarRanking(ranking) {
+            var htmlRanking = "<div class=\"card-ranking\">";
+            for (var i = 0; i < ranking.length; i++) {
+                var element = ranking[i];
+                var htmlParticipante = cardParticipante;
+                htmlParticipante = htmlParticipante.replace(/%pos-participante%/g, (i + 1));
+                htmlParticipante = htmlParticipante.replace(/%nome-participante%/g, element.nickname);
+                htmlParticipante = htmlParticipante.replace(/%pontuacao-participante%/g, element.pontuacao);
+                htmlRanking += htmlParticipante;
+            }
 
+            htmlRanking += "</div>"
+            $(".header").html("Top 10");
+            $(".container").html(htmlRanking);
         }
     </script>
 </body>
