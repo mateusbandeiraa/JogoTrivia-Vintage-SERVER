@@ -29,6 +29,8 @@ import br.uniriotec.bsi.tp2.JogoTrivia_API.Opcao;
 import br.uniriotec.bsi.tp2.JogoTrivia_API.Participante;
 import br.uniriotec.bsi.tp2.JogoTrivia_API.Partida;
 import br.uniriotec.bsi.tp2.JogoTrivia_API.Questao;
+import br.uniriotec.bsi.tp2.JogoTrivia_SERVER.persistence.InteracaoDao;
+import br.uniriotec.bsi.tp2.JogoTrivia_SERVER.persistence.InteracaoDataSource;
 import br.uniriotec.bsi.tp2.JogoTrivia_SERVER.persistence.JogoDao;
 import br.uniriotec.bsi.tp2.JogoTrivia_SERVER.persistence.JogoDataSource;
 import br.uniriotec.bsi.tp2.JogoTrivia_SERVER.persistence.JogoDummyDao;
@@ -52,6 +54,7 @@ public class TriviaService {
 	private static final JogoDataSource JOGO_DAO = new JogoDao();
 	private static final QuestaoDataSource QUESTAO_DAO = new QuestaoDao();
 	private static final OpcaoDataSource OPCAO_DAO = new OpcaoDao();
+	private static final InteracaoDataSource INTERACAO_DAO = new InteracaoDao();
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON + CHARSET)
@@ -69,7 +72,8 @@ public class TriviaService {
 	public String obterPartida(@PathParam("id") int id) {
 		Partida partida = PARTIDA_DAO.find(id);
 		Gson gson;
-		if ((partida.getEstadoAtual() == EstadoPartida.EM_ANDAMENTO) && partida.obterDataMaximaParaResposta().before(new Date()))
+		if ((partida.getEstadoAtual() == EstadoPartida.EM_ANDAMENTO)
+				&& partida.obterDataMaximaParaResposta().before(new Date()))
 			gson = new GsonBuilder()
 					.setExclusionStrategies(new GenericExclusionStrategy(MODO_SERIALIZACAO.PARTIDA_INEDITA)).create();
 		else
@@ -86,7 +90,6 @@ public class TriviaService {
 	@Path("matricularParticipante/")
 	public String matricularParticipante(@FormParam("idPartida") int idPartida,
 			@FormParam("nickname") String nickname) {
-		System.out.println(idPartida);
 		Partida partida = PARTIDA_DAO.find(idPartida);
 		Participante participante = new Participante(nickname, 0, 0, partida);
 		participante.setChave(gerarChave(participante));
@@ -158,7 +161,7 @@ public class TriviaService {
 		}
 
 		participante.adicionarInteracao(interacao);
-		PARTICIPANTE_DAO.update(participante);
+		INTERACAO_DAO.save(interacao);
 		return gson.toJson(participante);
 
 	}
@@ -168,7 +171,6 @@ public class TriviaService {
 	@Path("obterClassificacao/{idPartida}")
 	public String obterClassificacao(@PathParam("idPartida") int idPartida) {
 		Partida partida = PARTIDA_DAO.find(idPartida);
-		System.out.println(partida);
 		List<Participante> top10 = partida.obterClassificacao();
 		Gson gson = new GsonBuilder()
 				.setExclusionStrategies(new GenericExclusionStrategy(MODO_SERIALIZACAO.CLASSIFICACAO))
