@@ -8,6 +8,7 @@ import br.uniriotec.bsi.tp2.JogoTrivia_API.ConjuntoOrdenado;
 import br.uniriotec.bsi.tp2.JogoTrivia_API.ConjuntoUnitario;
 import br.uniriotec.bsi.tp2.JogoTrivia_API.Jogo;
 import br.uniriotec.bsi.tp2.JogoTrivia_API.Opcao;
+import br.uniriotec.bsi.tp2.JogoTrivia_API.Partida;
 import br.uniriotec.bsi.tp2.JogoTrivia_API.Questao;
 
 /**
@@ -22,7 +23,7 @@ public class JogoDummyDao implements JogoDataSource {
 	public Jogo find(int id) {
 		Jogo j = new Jogo("Conhecimentos gerais", 0, 1);
 
-		Questao q = new Questao("Qual super herói da Marvel usa um martelo?", 10, 5);
+		Questao q = new Questao("Qual super herói da Marvel usa um martelo?", 10, 0);
 
 		Opcao o1 = new Opcao("Homem de Ferro");
 		Opcao o2 = new Opcao("Doutor Estranho");
@@ -50,7 +51,7 @@ public class JogoDummyDao implements JogoDataSource {
 
 		j.adicionarQuestao(q);
 
-		q = new Questao("Cada versão do Android recebe um nome relacionado a o que?", 10, 5);
+		q = new Questao("Cada versão do Android recebe um nome relacionado a o que?", 10, 0);
 
 		o1 = new Opcao("Animais");
 		o2 = new Opcao("Lugares");
@@ -78,7 +79,7 @@ public class JogoDummyDao implements JogoDataSource {
 
 		j.adicionarQuestao(q);
 
-		q = new Questao("Em O Senhor dos Anéis, quantos membros há inicialmente na Sociedade do Anel?", 10, 5);
+		q = new Questao("Em O Senhor dos Anéis, quantos membros há inicialmente na Sociedade do Anel?", 10, 0);
 
 		o1 = new Opcao("8");
 		o2 = new Opcao("9");
