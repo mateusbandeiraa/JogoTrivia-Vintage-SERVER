@@ -3,8 +3,6 @@ package br.uniriotec.bsi.tp2.JogoTrivia_SERVER.persistence;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gson.GsonBuilder;
-
 import br.uniriotec.bsi.tp2.JogoTrivia_API.ConjuntoMultiplo;
 import br.uniriotec.bsi.tp2.JogoTrivia_API.ConjuntoOrdenado;
 import br.uniriotec.bsi.tp2.JogoTrivia_API.ConjuntoUnitario;
@@ -22,7 +20,7 @@ public class JogoDummyDao implements JogoDataSource {
 
 	@Override
 	public Jogo find(int id) {
-		Jogo j = new Jogo("Conhecimentos gerais", 0, 1);
+		Jogo j = new Jogo("Apresentação TP2", 0, 1);
 
 		Questao q = new Questao("Qual é a atriz conhecida pelo meme das fórmulas matemáticas?", 10, 0);
 
@@ -105,9 +103,9 @@ public class JogoDummyDao implements JogoDataSource {
 		q.setOpcoes(cOpcoes);
 		q.setOpcoesARemover(cOpcoesARemover);
 		q.setConjuntoSolucao(conjuntoSolucao);
-		
+
 		j.adicionarQuestao(q);
-		
+
 		q = new Questao("Quantos são os Vingadores do filme de 2012?", 10, 0);
 
 		o1 = new Opcao("5");
@@ -133,9 +131,9 @@ public class JogoDummyDao implements JogoDataSource {
 		q.setOpcoes(cOpcoes);
 		q.setOpcoesARemover(cOpcoesARemover);
 		q.setConjuntoSolucao(conjuntoSolucao);
-		
+
 		j.adicionarQuestao(q);
-		
+
 		q = new Questao("Qual país não faz parte dos BRICS?", 10, 0);
 
 		o1 = new Opcao("África do Sul");
@@ -161,10 +159,10 @@ public class JogoDummyDao implements JogoDataSource {
 		q.setOpcoes(cOpcoes);
 		q.setOpcoesARemover(cOpcoesARemover);
 		q.setConjuntoSolucao(conjuntoSolucao);
-		
+
 		j.adicionarQuestao(q);
-		
-		q = new Questao("O que é \"De Morgan?\"", 10, 0);
+
+		q = new Questao("O que é \"De Morgan\"?", 10, 0);
 
 		o1 = new Opcao("Um ator");
 		o2 = new Opcao("Regra de Inferência");
@@ -191,7 +189,7 @@ public class JogoDummyDao implements JogoDataSource {
 		q.setConjuntoSolucao(conjuntoSolucao);
 
 		j.adicionarQuestao(q);
-		
+
 		q = new Questao("Quantos ônibus Morgana contou na sua volta do Rio Sul?", 10, 0);
 
 		o1 = new Opcao("5 107 e 3 513");
@@ -219,7 +217,7 @@ public class JogoDummyDao implements JogoDataSource {
 		q.setConjuntoSolucao(conjuntoSolucao);
 
 		j.adicionarQuestao(q);
-		
+
 		q = new Questao("Quantos professores estão na página do BSI?", 10, 0);
 
 		o1 = new Opcao("17");
@@ -247,7 +245,7 @@ public class JogoDummyDao implements JogoDataSource {
 		q.setConjuntoSolucao(conjuntoSolucao);
 
 		j.adicionarQuestao(q);
-		
+
 		q = new Questao("Aham, senta lá...", 10, 0);
 
 		o1 = new Opcao("Claudia");
@@ -275,7 +273,7 @@ public class JogoDummyDao implements JogoDataSource {
 		q.setConjuntoSolucao(conjuntoSolucao);
 
 		j.adicionarQuestao(q);
-		
+
 		q = new Questao("Qual o recorde de dias sem treta no grupo geral de BSI?", 10, 0);
 
 		o1 = new Opcao("8");
