@@ -118,8 +118,8 @@ public class TriviaService {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON + CHARSET)
 	@Produces(MediaType.APPLICATION_JSON + CHARSET)
-	@Path("usarAjudaRemoverQuestoes/")
-	public String usarAjudaRemoverQuestoes(@FormParam("idParticipante") String idParticipante,
+	@Path("usarAjudaRemoverOpcoes/")
+	public String usarAjudaRemoverOpcoes(@FormParam("idParticipante") String idParticipante,
 			@FormParam("chave") String chave) {
 		Participante participante = PARTICIPANTE_DAO.find(Integer.parseInt(idParticipante));
 
@@ -127,16 +127,20 @@ public class TriviaService {
 			throw new WebApplicationException(401);
 		}
 
-		participante.usarAjudaRemoverOpcoes();
+		try {
+			participante.usarAjudaRemoverOpcoes();
+		} catch (IllegalStateException ex) {
+			throw new WebApplicationException(401);
+		}
 		PARTICIPANTE_DAO.update(participante);
 
 		Partida partida = participante.getPartida();
 		Questao questaoAtual = partida.getQuestaoAtual();
-		ConjuntoMultiplo questoesARemover = questaoAtual.getOpcoesARemover();
+		ConjuntoMultiplo opcoesARemover = questaoAtual.getOpcoesARemover();
 
 		Gson gson = new GsonBuilder()
 				.setExclusionStrategies(new GenericExclusionStrategy(MODO_SERIALIZACAO.QUESTAO_EM_JOGO)).create();
-		return gson.toJson(questoesARemover);
+		return gson.toJson(opcoesARemover);
 	}
 
 	@POST

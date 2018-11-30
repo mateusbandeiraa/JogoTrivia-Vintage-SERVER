@@ -174,3 +174,19 @@ function obterTop10(idPartida, callback){
 		}
 	});
 }
+
+function usarAjudaRemoverOpcoes(participante, callback){
+	$.ajax({
+		url: ENDPOINT + "usarAjudaRemoverOpcoes/",
+		type: "POST",
+		data: {
+			idParticipante: participante.id,
+			chave: participante.chave
+		},
+		contentType: "application/json",
+		success: function (e) {
+			console.log(e);
+			callback(e);
+		}
+	});
+}

@@ -27,6 +27,14 @@ a.card, a.card:hover {
 
 .card-partida, .card-alternativa {
 	margin-bottom: 10px;
+	cursor: pointer;
+}
+
+.card.card-alternativa.alternativa-removida {
+	text-decoration: line-through !important;
+	background-color: gainsboro !important;
+	color: darkgrey !important;
+	cursor: default;
 }
 
 .card-alternativa .card-title {

@@ -94,7 +94,7 @@
 
 
             $(".header").html("Escolha uma");
-            $(".container").html(htmlQuestao + htmlOpcoes);
+            $(".container").html(htmlQuestao + htmlOpcoes + cardAjudas.replace(/%opcoes-removiveis%/g, questaoAtual.quantidadeARemover));
 
             $("#ampulheta").css("transition", "all linear " + tempoParaResposta + "s");
 
@@ -108,6 +108,11 @@
                 }
 
                 registrarInteracao(partidaAtual.id, questaoAtual.id, e.currentTarget.attributes["data-id-opcao"].value, participante.id, participante.chave);
+                $("[data-id-opcao]").off("click");
+            });
+
+            $("#ajudaRemoverQuestoes").on("click", function(){
+                usarAjudaRemoverOpcoes(participante, removerOpcoes);
             });
 
             setTimeout(function () { $("#ampulheta").addClass("ativo") }, 1);
@@ -132,6 +137,13 @@
             htmlRanking += "</div>"
             $(".header").html("Top 10");
             $(".container").html(htmlRanking);
+        }
+
+        function removerOpcoes(opcoesARemover){
+            opcoesARemover.opcoes.forEach(element => {
+                $('[data-id-opcao="' + element.id + '"]').addClass("alternativa-removida");
+                $('[data-id-opcao="' + element.id + '"]').off("click");
+            });
         }
     </script>
 </body>
