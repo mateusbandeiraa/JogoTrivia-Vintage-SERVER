@@ -190,12 +190,12 @@ public class JogoDummyDao implements JogoDataSource {
 
 		j.adicionarQuestao(q);
 
-		q = new Questao("Quantos ônibus Morganna contou na sua volta do Rio Sul?", 10, 0);
+		q = new Questao("Quantos ônibus Morganna contou na sua volta do Rio Sul?", 15, 0);
 
-		o1 = new Opcao("5 107 e 3 513");
-		o2 = new Opcao("6 107 e 3 513");
-		o3 = new Opcao("5 107 e 2 513");
-		o4 = new Opcao("6 107 e 2 513");
+		o1 = new Opcao("Cinco 107 e três 513");
+		o2 = new Opcao("Seis 107 e três 513");
+		o3 = new Opcao("Cinco 107 e dois 513");
+		o4 = new Opcao("Seis 107 e dois 513");
 
 		opcoes = new ArrayList<>();
 
