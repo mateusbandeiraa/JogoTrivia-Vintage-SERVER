@@ -37,6 +37,7 @@
         $("#btn-select-nickname").click(function (e) {
             var nickname = $("#nickname").val();
             matricularParticipante(nickname, idPartida, atualizarPartida);
+            $("#btn-select-nickname").off("click");
             obterQuestaoAtual(renderizarQuestao, exibirResposta);
             setInterval(function () { obterQuestaoAtual(renderizarQuestao, exibirResposta) }, 500);
         });
@@ -83,7 +84,7 @@
             });
 
             tempoParaResposta = new Date(partidaAtual.dataQuestaoAtual);
-            tempoParaResposta.setTime(tempoParaResposta.getTime + diferencaHora);
+            tempoParaResposta.setTime(tempoParaResposta.getTime() + diferencaHora);
             tempoParaResposta.setTime(tempoParaResposta.getTime() + (questaoAtual.tempoDisponivel * 1000));
             tempoParaResposta.setTime(tempoParaResposta.getTime() - Date.now());
             tempoParaResposta = tempoParaResposta.getTime() / 1000;
@@ -95,8 +96,6 @@
 
             $(".header").html("Escolha uma");
             $(".container").html(htmlQuestao + htmlOpcoes + cardAjudas.replace(/%opcoes-removiveis%/g, questaoAtual.quantidadeARemover));
-
-            $("#ampulheta").css("transition", "all linear " + tempoParaResposta + "s");
 
             $("[data-id-opcao]").on("click", function (e) {
                 $(e.currentTarget).addClass("alternativa-selecionada");
@@ -115,7 +114,9 @@
                 usarAjudaRemoverOpcoes(participante, removerOpcoes);
             });
 
-            setTimeout(function () { $("#ampulheta").addClass("ativo") }, 1);
+            setTimeout(function () {
+            	$("#ampulheta").css("transition-duration", tempoParaResposta + "s");
+            	$("#ampulheta").addClass("ativo") }, 1);
         }
 
         function exibirResposta(questaoAtual) {
